@@ -1,0 +1,1 @@
+/Users/pranavvij/Desktop/GradlePluginExample/buildSrc/build/classes/java/main/org/example/greeting/Greeting.class:/Users/pranavvij/Desktop/GradlePluginExample/buildSrc/build/classes/java/main/org/example/greeting/GreetingPlugin.class
