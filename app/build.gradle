@@ -1,5 +1,8 @@
 import com.bosch.license.LicensePlugin
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: LicensePlugin
 
 
@@ -20,7 +23,6 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -32,9 +34,26 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.core:core-ktx:1.0.2"
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+}
+
+afterEvaluate {
+    gradle.startParameter.taskNames.each { taskName ->
+        if (taskName.toLowerCase().contains("debug")) {
+            // building the application through assembleDebug
+            preDebugBuild.dependsOn licenseDebugReport
+        } else if (taskName.toLowerCase().contains("release")) {
+            // building the application through assembleRelease
+            preReleaseBuild.dependsOn licenseReleaseReport
+        } else if (taskName.toLowerCase() == "build") { // building the application through build
+            preReleaseBuild.dependsOn licenseReleaseReport
+            preDebugBuild.dependsOn licenseDebugReport
+        }
+    }
+}
+
+clean.doFirst {
+    delete "$projectDir/src/main/assets/open_source_licenses.html"
 }

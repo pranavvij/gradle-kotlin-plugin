@@ -153,6 +153,7 @@ open class LicenseReportTask : DefaultTask() { // tasks can't be final
                 .lenientConfiguration
                 .artifacts.forEach { resolvedArtifact ->
 
+
             val pomFile = resolvedArtifact.file
             val node = xmlParser.parse(pomFile)
 
@@ -181,7 +182,10 @@ open class LicenseReportTask : DefaultTask() { // tasks can't be final
             if (version.isEmpty()) {
                 version = findVersion(pomFile)
             }
-
+            if(name.contains("image-cropper")){
+                println(pomFile)
+                println(node)
+            }
             // Store the information that we need
             val module = resolvedArtifact.moduleVersion.id
             val project = Project().apply {

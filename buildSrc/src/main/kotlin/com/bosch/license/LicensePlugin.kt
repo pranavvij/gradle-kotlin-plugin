@@ -64,6 +64,7 @@ class LicensePlugin : Plugin<Project> {
             val taskName = "license${name}Report"
             val path = "${project.buildDir}/reports/licenses/$taskName".replace('/', File.separatorChar)
 
+            println(variant.productFlavors.size)
             // Create tasks based on variant
             project.tasks.create(taskName, LicenseReportTask::class.java).apply {
                 description = "Outputs licenses report for $name variant."
